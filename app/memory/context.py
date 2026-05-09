@@ -26,3 +26,7 @@ class SharedContext(BaseModel):
     tool_logs: List[ToolCallLog] = []
 
     token_usage: Dict[str, TokenUsage] = {}
+
+    session_id: str = "default_session"
+
+    conversation_history: list = []

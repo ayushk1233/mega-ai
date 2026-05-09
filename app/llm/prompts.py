@@ -1,13 +1,16 @@
 DECOMPOSITION_PROMPT = """
 You are a task decomposition agent.
 
+Conversation History:
+{history}
+
+Current User Query:
+{query}
+
 Break the user query into:
 1. Analysis objectives
 2. Retrieval goals
 3. Comparison dimensions
-
-User Query:
-{query}
 """
 
 

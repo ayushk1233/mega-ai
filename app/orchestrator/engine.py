@@ -13,14 +13,29 @@ from app.orchestrator.state_manager import (
 from app.observability.events import EventType
 from app.observability.logger import log_event
 from app.observability.schemas import LogEvent
+
 from app.agents.registry import AGENT_REGISTRY
+
+from app.memory.memory_manager import (
+    MemoryManager
+)
 
 
 class Orchestrator:
 
     def run(self, query: str) -> SharedContext:
 
-        context = SharedContext(user_query=query)
+        context = SharedContext(
+            user_query=query
+        )
+
+        memory_manager = MemoryManager()
+
+        context.conversation_history = (
+            memory_manager.get_session_history(
+                context.session_id
+            )
+        )
 
         mark_running(context)
 
@@ -56,6 +71,16 @@ class Orchestrator:
                 message="Orchestration completed",
                 job_id=context.job_id
             )
+        )
+
+        final_response = context.agent_outputs[
+            "synthesis"
+        ].output
+
+        memory_manager.append_conversation(
+            session_id=context.session_id,
+            user_query=context.user_query,
+            response=final_response
         )
 
         return context

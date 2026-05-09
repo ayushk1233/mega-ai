@@ -12,6 +12,7 @@ class DecompositionAgent(BaseAgent):
     def run(self, context: SharedContext) -> SharedContext:
 
         prompt = DECOMPOSITION_PROMPT.format(
+            history=context.conversation_history,
             query=context.user_query
         )
 

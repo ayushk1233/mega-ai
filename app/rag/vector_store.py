@@ -8,7 +8,7 @@ class VectorStore:
 
         self.index = faiss.IndexFlatL2(dimension)
 
-        self.text_chunks = []
+        self.chunks = []
 
     def add_embeddings(self, embeddings, chunks):
 
@@ -18,7 +18,7 @@ class VectorStore:
 
         self.index.add(embeddings)
 
-        self.text_chunks.extend(chunks)
+        self.chunks.extend(chunks)
 
     def search(self, embedding, top_k=2):
 
@@ -35,7 +35,7 @@ class VectorStore:
 
         for idx in indices[0]:
             results.append(
-                self.text_chunks[idx]
+                self.chunks[idx]
             )
 
         return results

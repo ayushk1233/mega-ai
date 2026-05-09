@@ -12,8 +12,12 @@ class TokenUsage(BaseModel):
 
 class ProvenanceEntry(BaseModel):
     sentence: str
+
     source_agent: AgentType
-    source_chunks: List[str] = []
+
+    source_chunk_ids: List[str] = []
+
+    evidence: str
 
 
 class ToolCallLog(BaseModel):

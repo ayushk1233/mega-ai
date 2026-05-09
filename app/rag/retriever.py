@@ -19,7 +19,9 @@ class Retriever:
 
         self.chunks = chunk_text(text)
 
-        embeddings = embed_text(self.chunks)
+        embeddings = embed_text(
+            [chunk["text"] for chunk in self.chunks]
+        )
 
         dimension = len(embeddings[0])
 

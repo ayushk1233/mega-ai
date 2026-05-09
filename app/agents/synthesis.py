@@ -12,6 +12,16 @@ class SynthesisAgent(BaseAgent):
             "retrieval"
         ].output
 
+        citations = []
+
+        for provenance in context.provenance:
+
+            citations.extend(
+                provenance.source_chunk_ids
+            )
+
+            citation_text = ", ".join(citations)
+
         final_answer = f"""
 Final Analysis:
 
@@ -20,6 +30,8 @@ Final Analysis:
 Tesla prioritizes performance and vertical integration.
 
 BYD prioritizes manufacturing scale and battery safety.
+
+Sources: {citation_text}
 """
 
         context.agent_outputs["synthesis"] = AgentOutput(

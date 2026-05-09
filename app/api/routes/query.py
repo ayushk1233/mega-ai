@@ -1,4 +1,7 @@
 import uuid
+from app.observability.events import EventType
+from app.observability.logger import log_event
+from app.observability.schemas import LogEvent
 
 from fastapi import APIRouter
 
@@ -19,8 +22,17 @@ async def root():
     response_model=QueryResponse
 )
 async def submit_query(payload: QueryRequest):
+    job_id = str(uuid.uuid4())
+    log_event(
+        LogEvent(
+            event_type=EventType.JOB_CREATED,
+            message="New orchestration job created",
+            job_id=job_id
+        )
+    )
     return QueryResponse(
         job_id=str(uuid.uuid4()),
         status="accepted",
         query=payload.query
     )
+    

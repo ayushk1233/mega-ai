@@ -2,8 +2,14 @@ from app.memory.conversation_store import (
     ConversationStore
 )
 
+from app.memory.summarizer import (
+    MemorySummarizer
+)
 
-store = ConversationStore()
+
+store = ConversationStore() 
+
+summarizer = MemorySummarizer()
 
 
 class MemoryManager:
@@ -17,7 +23,15 @@ class MemoryManager:
 
         history = memory.get(session_id, [])
 
-        return history[-2:]
+        compressed_history = []
+
+        for item in history[-3:]:
+
+            compressed_history.append(
+                item.get("summary", "")
+            )
+
+        return compressed_history
 
     def append_conversation(
         self,
@@ -31,10 +45,15 @@ class MemoryManager:
         if session_id not in memory:
             memory[session_id] = []
 
+        conversation_entry = {"query": user_query, "response": response}
+
+        summary = summarizer.summarize(
+            [conversation_entry]
+        )
+
         memory[session_id].append(
             {
-                "query": user_query,
-                "response": response
+                "summary": summary
             }
         )
 

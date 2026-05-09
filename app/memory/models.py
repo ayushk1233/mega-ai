@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
+from typing import Any
 
 from app.memory.enums import AgentType, ToolStatus
 
@@ -29,5 +30,5 @@ class ToolCallLog(BaseModel):
 
 class AgentOutput(BaseModel):
     agent: AgentType
-    output: str
-    confidence: Optional[float] = None
+    output: Any
+    confidence: float

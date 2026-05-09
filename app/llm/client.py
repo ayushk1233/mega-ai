@@ -1,6 +1,7 @@
 from openai import OpenAI
 
 from app.config.settings import settings
+import json
 
 
 client = OpenAI(
@@ -27,4 +28,6 @@ def generate_response(prompt: str):
         }
     )
 
-    return response.choices[0].message.content
+    content = response.choices[0].message.content
+
+    return json.loads(content)

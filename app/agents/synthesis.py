@@ -6,7 +6,9 @@ from app.llm.prompts import SYNTHESIS_PROMPT
 from app.memory.context import SharedContext
 from app.memory.enums import AgentType
 from app.memory.models import AgentOutput
-
+from app.llm.schemas import (
+    SynthesisSchema
+)
 
 class SynthesisAgent(BaseAgent):
 
@@ -21,10 +23,13 @@ class SynthesisAgent(BaseAgent):
         )
 
         response = generate_response(prompt)
+        validated = SynthesisSchema(
+            **response
+        )
 
         context.agent_outputs["synthesis"] = AgentOutput(
             agent=AgentType.SYNTHESIS,
-            output=response,
+            output=validated.model_dump(),
             confidence=0.94
         )
 

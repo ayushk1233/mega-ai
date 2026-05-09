@@ -5,6 +5,9 @@ from app.llm.prompts import DECOMPOSITION_PROMPT
 from app.memory.context import SharedContext
 from app.memory.enums import AgentType
 from app.memory.models import AgentOutput
+from app.llm.schemas import (
+    DecompositionSchema
+)
 
 
 class DecompositionAgent(BaseAgent):
@@ -17,10 +20,13 @@ class DecompositionAgent(BaseAgent):
         )
 
         response = generate_response(prompt)
+        validated = DecompositionSchema(
+            **response
+        )
 
         context.agent_outputs["decomposition"] = AgentOutput(
             agent=AgentType.DECOMPOSITION,
-            output=response,
+            output=validated.model_dump(),
             confidence=0.92
         )
 

@@ -6,7 +6,9 @@ from app.llm.prompts import CRITIQUE_PROMPT
 from app.memory.context import SharedContext
 from app.memory.enums import AgentType
 from app.memory.models import AgentOutput
-
+from app.llm.schemas import (
+    CritiqueSchema
+)
 
 class CritiqueAgent(BaseAgent):
 
@@ -26,10 +28,13 @@ class CritiqueAgent(BaseAgent):
         )
 
         critique = generate_response(prompt)
+        validated = CritiqueSchema(
+            **critique
+        )
 
         context.agent_outputs["critique"] = AgentOutput(
             agent=AgentType.CRITIQUE,
-            output=critique,
+            output=validated.model_dump(),
             confidence=0.90
         )
 

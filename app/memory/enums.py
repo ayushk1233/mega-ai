@@ -12,8 +12,8 @@ class AgentType(str, Enum):
     ORCHESTRATOR = "orchestrator"
     DECOMPOSITION = "decomposition"
     RETRIEVAL = "retrieval"
-    CRITIQUE = "critique"
     SYNTHESIS = "synthesis"
+    CRITIQUE = "critique"
 
 
 class ToolStatus(str, Enum):

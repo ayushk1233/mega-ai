@@ -1,4 +1,8 @@
 from app.agents.base import BaseAgent
+
+from app.llm.client import generate_response
+from app.llm.prompts import SYNTHESIS_PROMPT
+
 from app.memory.context import SharedContext
 from app.memory.enums import AgentType
 from app.memory.models import AgentOutput
@@ -12,32 +16,16 @@ class SynthesisAgent(BaseAgent):
             "retrieval"
         ].output
 
-        citations = []
+        prompt = SYNTHESIS_PROMPT.format(
+            evidence=retrieval_output
+        )
 
-        for provenance in context.provenance:
-
-            citations.extend(
-                provenance.source_chunk_ids
-            )
-
-            citation_text = ", ".join(citations)
-
-        final_answer = f"""
-Final Analysis:
-
-{retrieval_output}
-
-Tesla prioritizes performance and vertical integration.
-
-BYD prioritizes manufacturing scale and battery safety.
-
-Sources: {citation_text}
-"""
+        response = generate_response(prompt)
 
         context.agent_outputs["synthesis"] = AgentOutput(
             agent=AgentType.SYNTHESIS,
-            output=final_answer,
-            confidence=0.93
+            output=response,
+            confidence=0.94
         )
 
         return context

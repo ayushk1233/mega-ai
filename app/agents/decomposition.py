@@ -1,4 +1,7 @@
 from app.agents.base import BaseAgent
+from app.llm.client import generate_response
+from app.llm.prompts import DECOMPOSITION_PROMPT
+
 from app.memory.context import SharedContext
 from app.memory.enums import AgentType
 from app.memory.models import AgentOutput
@@ -8,18 +11,16 @@ class DecompositionAgent(BaseAgent):
 
     def run(self, context: SharedContext) -> SharedContext:
 
-        query = context.user_query
+        prompt = DECOMPOSITION_PROMPT.format(
+            query=context.user_query
+        )
 
-        tasks = [
-            f"Analyze core topic of: {query}",
-            "Identify comparison dimensions",
-            "Prepare retrieval objectives"
-        ]
+        response = generate_response(prompt)
 
         context.agent_outputs["decomposition"] = AgentOutput(
             agent=AgentType.DECOMPOSITION,
-            output="\n".join(tasks),
-            confidence=0.91
+            output=response,
+            confidence=0.92
         )
 
         return context

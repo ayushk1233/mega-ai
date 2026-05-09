@@ -3,21 +3,25 @@ from app.memory.context import SharedContext
 from app.memory.enums import AgentType
 from app.memory.models import AgentOutput
 
+from app.rag.retriever import Retriever
+
+retriever = Retriever()
+
 
 class RetrievalAgent(BaseAgent):
 
     def run(self, context: SharedContext) -> SharedContext:
 
-        retrieval_result = """
-Tesla focuses on high-energy-density battery systems and vertical integration.
+        results = retriever.retrieve(
+            context.user_query
+        )
 
-BYD focuses on Blade Battery safety architecture and manufacturing scale.
-"""
+        retrieval_result = "\n".join(results)
 
         context.agent_outputs["retrieval"] = AgentOutput(
             agent=AgentType.RETRIEVAL,
             output=retrieval_result,
-            confidence=0.88
+            confidence=0.89
         )
 
         return context

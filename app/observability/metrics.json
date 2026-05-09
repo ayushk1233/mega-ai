@@ -178,5 +178,85 @@
     "agent": "critique",
     "latency_seconds": 3.41,
     "token_estimate": 116
+  },
+  {
+    "agent": "decomposition",
+    "latency_seconds": 4.31,
+    "token_estimate": 90
+  },
+  {
+    "agent": "retrieval",
+    "latency_seconds": 8.09,
+    "token_estimate": 147
+  },
+  {
+    "agent": "synthesis",
+    "latency_seconds": 6.57,
+    "token_estimate": 316
+  },
+  {
+    "agent": "critique",
+    "latency_seconds": 3.9,
+    "token_estimate": 232
+  },
+  {
+    "agent": "decomposition",
+    "latency_seconds": 4.3,
+    "token_estimate": 151
+  },
+  {
+    "agent": "retrieval",
+    "latency_seconds": 7.73,
+    "token_estimate": 67
+  },
+  {
+    "agent": "synthesis",
+    "latency_seconds": 4.02,
+    "token_estimate": 167
+  },
+  {
+    "agent": "critique",
+    "latency_seconds": 3.49,
+    "token_estimate": 179
+  },
+  {
+    "agent": "decomposition",
+    "latency_seconds": 3.42,
+    "token_estimate": 141
+  },
+  {
+    "agent": "retrieval",
+    "latency_seconds": 8.35,
+    "token_estimate": 130
+  },
+  {
+    "agent": "synthesis",
+    "latency_seconds": 12.51,
+    "token_estimate": 321
+  },
+  {
+    "agent": "critique",
+    "latency_seconds": 3.89,
+    "token_estimate": 220
+  },
+  {
+    "agent": "decomposition",
+    "latency_seconds": 3.22,
+    "token_estimate": 89
+  },
+  {
+    "agent": "retrieval",
+    "latency_seconds": 8.13,
+    "token_estimate": 135
+  },
+  {
+    "agent": "synthesis",
+    "latency_seconds": 8.82,
+    "token_estimate": 382
+  },
+  {
+    "agent": "critique",
+    "latency_seconds": 4.11,
+    "token_estimate": 175
   }
 ]

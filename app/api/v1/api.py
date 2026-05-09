@@ -7,12 +7,19 @@ from app.api.routes.orchestrator import router as orchestrator_router
 from app.api.routes.metrics import (
     router as metrics_router
 )
+
+from app.api.routes.stream import (
+    router as stream_router
+)
+
+
 api_router = APIRouter()
 
 api_router.include_router(
     orchestrator_router,
     tags=["Orchestrator"]
 )
+api_router.include_router(stream_router)
 
 api_router.include_router(metrics_router)
 

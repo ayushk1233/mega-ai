@@ -61,6 +61,18 @@
     },
     {
       "summary": "Tesla is developing advanced battery technologies including an aluminum-ion battery with ultra-fast 15-minute charging, nearly double the range (745 miles), up to 3,000 charge cycles, and 30% lower production costs, expected in vehicles within 18\u201324 months. In 2026, Tesla will launch four new 4680 battery cells tailored for different models, featuring silicon carbon anodes for faster charging and higher energy output. Additionally, a new nickel-based chemistry will raise the daily charge limit from 80% to 90% state of charge, improving daily driving range."
+    },
+    {
+      "summary": "Tesla is innovating battery technology with an aluminum-ion battery offering ultra-fast 15-minute charging, ~3,000 cycle lifespan, nearly double range (745 miles), ~30% cost reduction, and no overheating or reliance on scarce materials; mass production is expected in 18\u201324 months. Improvements in nickel-based chemistry raise daily charge limits from 80% to 90% SOC, enhancing range without reducing longevity. The 4680 tabless battery cell faces production challenges, limiting use mainly to the Cybertruck, though domestic dry-electrode 4680 production continues in Austin aiming for full domestic material sourcing."
+    },
+    {
+      "summary": "Tesla is innovating its battery technology with a new nickel-based chemistry that supports a higher daily charge limit of 90% SOC and aluminum additions to improve ion conductivity. These advancements enable ultra-fast charging and longer battery life. Tesla updates its battery designs regularly and plans to launch four new 4680 battery variants in 2026, showcasing ongoing improvements in lithium-ion technology."
+    },
+    {
+      "summary": "Tesla plans to launch four new 4680 nickel-based battery cells in 2026 (NC05, NC20, NC30, NC50) with advanced chemistries and manufacturing innovations. These improvements include silicon carbon anodes for faster charging, a higher daily charge limit (80% to 90% SOC), and a dry cathode process that cuts costs by over 50% and reduces factory footprint. The focus remains on optimizing lithium-ion and lithium-iron-phosphate batteries in the near term, with solid-state batteries as a longer-term goal. Key suppliers include CATL, LG, Panasonic, and Tesla\u2019s in-house designs."
+    },
+    {
+      "summary": "Tesla plans to launch four new 4680 nickel-based battery cells in 2026\u2014NC05 for easy manufacturing and affordable models, NC20 for SUVs and Cybertruck with heavy-duty capability, and NC30/NC50 with silicon carbon anodes for faster charging and higher energy output enabling ultra-fast Supercharging. These advancements raise the daily charge limit from 80% to 90% SOC, improving range without reducing battery life. Tesla continues incremental improvements in battery tech and manufacturing while researching solid-state batteries but expects lithium-ion and LFP chemistries to dominate in the near term."
     }
   ]
 }

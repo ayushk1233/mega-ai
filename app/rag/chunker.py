@@ -1,18 +1,45 @@
-def chunk_text(text: str, chunk_size: int = 120):
+from typing import List
+
+
+def chunk_text(
+    text: str,
+    chunk_size: int = 3,
+    overlap: int = 1
+):
+
+    sentences = text.split(".")
+
+    cleaned = [
+        sentence.strip()
+        for sentence in sentences
+        if sentence.strip()
+    ]
 
     chunks = []
 
+    step = chunk_size - overlap
+
     chunk_id = 1
 
-    for i in range(0, len(text), chunk_size):
+    for i in range(
+        0,
+        len(cleaned),
+        step
+    ):
 
-        chunk = {
-            "chunk_id": f"chunk_{chunk_id}",
-            "text": text[i:i + chunk_size]
-        }
+        sentence_group = cleaned[
+            i:i + chunk_size
+        ]
 
-        chunks.append(chunk)
+        if sentence_group:
 
-        chunk_id += 1
+            chunk = {
+                "chunk_id": f"chunk_{chunk_id}",
+                "text": ". ".join(sentence_group)
+            }
+
+            chunks.append(chunk)
+
+            chunk_id += 1
 
     return chunks

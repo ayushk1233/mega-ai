@@ -8,9 +8,13 @@ from app.rag.retriever import Retriever
 from app.tools.executor import (
     ToolExecutor
 )
+from app.rag.reranker import (
+    Reranker
+)
 
 retriever = Retriever()
 tool_executor = ToolExecutor()
+reranker = Reranker()
 
 class RetrievalAgent(BaseAgent):
 
@@ -19,6 +23,13 @@ class RetrievalAgent(BaseAgent):
         results = retriever.retrieve(
             context.user_query
         )
+
+        results = reranker.rerank(
+            context.user_query,
+            results
+        )
+
+        results = results[:3]
 
 
         for chunk in results:

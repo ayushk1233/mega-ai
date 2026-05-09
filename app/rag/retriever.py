@@ -5,6 +5,7 @@ from app.rag.embedder import embed_text
 from app.rag.vector_store import VectorStore
 
 
+
 DOCUMENT_PATH = Path(
     "app/rag/documents/battery_report.txt"
 )

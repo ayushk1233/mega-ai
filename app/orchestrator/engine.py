@@ -1,8 +1,6 @@
 import time
 
 from app.memory.context import SharedContext
-from app.memory.models import AgentOutput
-from app.memory.enums import AgentType
 
 from app.orchestrator.pipeline import PIPELINE_STEPS
 from app.orchestrator.state_manager import (
@@ -13,6 +11,9 @@ from app.orchestrator.state_manager import (
 from app.observability.events import EventType
 from app.observability.logger import log_event
 from app.observability.schemas import LogEvent
+from app.observability.telemetry import (
+    TelemetryCollector
+)
 
 from app.agents.registry import AGENT_REGISTRY
 
@@ -30,6 +31,8 @@ class Orchestrator:
         )
 
         memory_manager = MemoryManager()
+
+        telemetry = TelemetryCollector()
 
         context.conversation_history = (
             memory_manager.get_session_history(
@@ -53,7 +56,25 @@ class Orchestrator:
 
             agent = AGENT_REGISTRY[step]
 
+            start_time = time.time()
+
             context = agent.run(context)
+
+            latency = time.time() - start_time
+
+            token_estimate = len(
+                str(
+                    context.agent_outputs[
+                        step
+                    ].output
+                ).split()
+            )
+
+            telemetry.track_agent(
+                agent_name=step,
+                latency=latency,
+                token_estimate=token_estimate
+            )
 
             log_event(
                 LogEvent(
@@ -82,5 +103,7 @@ class Orchestrator:
             user_query=context.user_query,
             response=final_response
         )
+
+        telemetry.persist()
 
         return context

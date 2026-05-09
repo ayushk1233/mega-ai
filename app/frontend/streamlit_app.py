@@ -186,10 +186,14 @@ if run_button and query:
                 for item in data["provenance"]:
 
                     st.markdown(
-                        f"""### Evidence Chunk
-**Source Agent:** {item['source_agent']}
+                        f"""### 📄 Source
 
-**Evidence:**
+**Agent:** {item['source_agent']}
+
+**Title / Evidence:**
+{item['sentence']}
+
+**Reference:**
 {item['evidence']}
 """
                     )

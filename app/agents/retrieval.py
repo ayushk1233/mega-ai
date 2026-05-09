@@ -75,6 +75,17 @@ class RetrievalAgent(BaseAgent):
                 context.user_query
             )
 
+            for result in web_results:
+
+                context.provenance.append(
+                    ProvenanceEntry(
+                        sentence=result["title"],
+                        source_agent=AgentType.RETRIEVAL,
+                        source_chunk_ids=["web_search"],
+                        evidence=result["link"]
+                    )
+                )
+
             raw_web_context = "\n".join(
                 [
                     result["body"]

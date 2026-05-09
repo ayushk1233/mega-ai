@@ -1,21 +1,24 @@
 from fastapi import FastAPI
 
+from app.config.settings import settings
+
 app = FastAPI(
-    title="Mega AI",
+    title=settings.APP_NAME,
     description="Production-Grade Multi-Agent LLM Orchestration System",
-    version="1.0.0"
+    version=settings.APP_VERSION
 )
 
 
 @app.get("/")
 async def root():
     return {
-        "message": "Mega AI backend is running"
+        "message": f"{settings.APP_NAME} backend is running"
     }
 
 
 @app.get("/health")
 async def health_check():
     return {
-        "status": "healthy"
+        "status": "healthy",
+        "debug_mode": settings.DEBUG
     }

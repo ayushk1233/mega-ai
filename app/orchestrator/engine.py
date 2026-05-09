@@ -13,6 +13,7 @@ from app.orchestrator.state_manager import (
 from app.observability.events import EventType
 from app.observability.logger import log_event
 from app.observability.schemas import LogEvent
+from app.agents.registry import AGENT_REGISTRY
 
 
 class Orchestrator:
@@ -35,11 +36,9 @@ class Orchestrator:
 
             time.sleep(1)
 
-            context.agent_outputs[step] = AgentOutput(
-                agent=AgentType.ORCHESTRATOR,
-                output=f"{step} completed successfully",
-                confidence=0.95
-            )
+            agent = AGENT_REGISTRY[step]
+
+            context = agent.run(context)
 
             log_event(
                 LogEvent(

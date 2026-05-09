@@ -15,7 +15,9 @@ class MemoryManager:
 
         memory = store.load_memory()
 
-        return memory.get(session_id, [])
+        history = memory.get(session_id, [])
+
+        return history[-2:]
 
     def append_conversation(
         self,

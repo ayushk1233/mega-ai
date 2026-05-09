@@ -5,9 +5,12 @@ from app.memory.models import AgentOutput
 from app.memory.models import ProvenanceEntry
 
 from app.rag.retriever import Retriever
+from app.tools.executor import (
+    ToolExecutor
+)
 
 retriever = Retriever()
-
+tool_executor = ToolExecutor()
 
 class RetrievalAgent(BaseAgent):
 
@@ -16,6 +19,7 @@ class RetrievalAgent(BaseAgent):
         results = retriever.retrieve(
             context.user_query
         )
+
 
         for chunk in results:
             context.provenance.append(
@@ -29,8 +33,29 @@ class RetrievalAgent(BaseAgent):
                 )
             )
 
-        retrieval_result = "\n".join(
-            chunk["text"] for chunk in results
+        web_results = tool_executor.execute(
+            "web_search",
+            context.user_query
+        )
+
+        web_context = "\n".join(
+            [
+                result["body"]
+                for result in web_results
+            ]
+        )
+
+        retrieval_result = (
+            "\n".join(
+                [
+                    chunk["text"]
+                    for chunk in results
+                ]
+            )
+            +
+            "\n\nExternal Intelligence:\n"
+            +
+            web_context
         )
 
         context.agent_outputs["retrieval"] = AgentOutput(

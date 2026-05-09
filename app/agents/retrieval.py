@@ -14,11 +14,15 @@ from app.rag.reranker import (
 from app.tools.router import (
     ToolRouter
 )
+from app.rag.distiller import (
+    EvidenceDistiller
+)   
 
 retriever = Retriever()
 tool_executor = ToolExecutor()
 reranker = Reranker()
 tool_router = ToolRouter()
+distiller = EvidenceDistiller()
 
 class RetrievalAgent(BaseAgent):
 
@@ -71,12 +75,18 @@ class RetrievalAgent(BaseAgent):
                 context.user_query
             )
 
-            web_context = "\n".join(
+            raw_web_context = "\n".join(
                 [
                     result["body"]
                     for result in web_results
                 ]
             )
+
+            web_context = distiller.distill(
+                raw_web_context
+            )
+
+            web_context = web_context[:2000]
 
         internal_context = "\n".join(
             [

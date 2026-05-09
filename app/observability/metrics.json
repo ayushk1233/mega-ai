@@ -158,5 +158,25 @@
     "agent": "critique",
     "latency_seconds": 5.15,
     "token_estimate": 211
+  },
+  {
+    "agent": "decomposition",
+    "latency_seconds": 2.78,
+    "token_estimate": 82
+  },
+  {
+    "agent": "retrieval",
+    "latency_seconds": 7.47,
+    "token_estimate": 138
+  },
+  {
+    "agent": "synthesis",
+    "latency_seconds": 6.59,
+    "token_estimate": 313
+  },
+  {
+    "agent": "critique",
+    "latency_seconds": 3.41,
+    "token_estimate": 116
   }
 ]

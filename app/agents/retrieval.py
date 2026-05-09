@@ -68,6 +68,20 @@ class RetrievalAgent(BaseAgent):
             )
         )
 
+        suppress_rag = (
+            tool_router.suppress_internal_rag(
+                context.user_query
+            )
+        )
+
+        print(
+            {
+                "should_search": should_search,
+                "prioritize_external": prioritize_external,
+                "suppress_rag": suppress_rag
+            }
+        )
+
         if prioritize_external:
 
             web_results = tool_executor.execute(
@@ -88,20 +102,32 @@ class RetrievalAgent(BaseAgent):
 
             web_context = web_context[:2000]
 
-        internal_context = "\n".join(
-            [
-                chunk["text"]
-                for chunk in results
-            ]
-        )
+        if suppress_rag:
 
+            internal_context = ""
+
+        else:
+
+            internal_context = "\n".join(
+                [
+                    chunk["text"]
+                    for chunk in results
+                ]
+            )
+        
         if prioritize_external and web_context:
 
             retrieval_result = (
                 "External Intelligence:\n"
                 + web_context
-                + "\n\nInternal Knowledge:\n" + internal_context
             )
+
+            if internal_context:
+
+                retrieval_result += (
+                    "\n\nInternal Knowledge:\n"
+                    + internal_context
+                )
 
         else:
 

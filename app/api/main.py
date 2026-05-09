@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.api.v1.api import api_router
 from app.config.settings import settings
 
 app = FastAPI(
@@ -8,17 +9,4 @@ app = FastAPI(
     version=settings.APP_VERSION
 )
 
-
-@app.get("/")
-async def root():
-    return {
-        "message": f"{settings.APP_NAME} backend is running"
-    }
-
-
-@app.get("/health")
-async def health_check():
-    return {
-        "status": "healthy",
-        "debug_mode": settings.DEBUG
-    }
+app.include_router(api_router)

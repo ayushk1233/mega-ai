@@ -7,6 +7,9 @@ from fastapi.responses import StreamingResponse
 from app.orchestrator.engine import (
     Orchestrator
 )
+from app.orchestrator.event_stream import (
+    event_queue
+)
 
 router = APIRouter()
 
@@ -15,28 +18,37 @@ orchestrator = Orchestrator()
 
 async def event_generator(query: str):
 
-    phases = [
-        "decomposition",
-        "retrieval",
-        "synthesis",
-        "critique"
-    ]
+    import threading
 
-    for phase in phases:
+    result_container = {}
 
-        status_event = json.dumps({
-            "type": "status",
-            "message": f"Running {phase} agent..."
-        })
-        yield f"data: {status_event}\n\n"
+    def run_orchestrator():
 
-        await asyncio.sleep(1)
+        context = orchestrator.run(query)
 
-    context = orchestrator.run(query)
+        result_container["context"] = (
+            context.model_dump()
+        )
+
+    thread = threading.Thread(
+        target=run_orchestrator
+    )
+
+    thread.start()
+
+    while thread.is_alive():
+
+        while not event_queue.empty():
+
+            event = event_queue.get()
+
+            yield f"data: {json.dumps(event)}\n\n"
+
+        await asyncio.sleep(0.1)
 
     final_event = json.dumps({
         "type": "final",
-        "data": context.model_dump()
+        "data": result_container["context"]
     })
     yield f"data: {final_event}\n\n"
 

@@ -40,20 +40,6 @@ class RetrievalAgent(BaseAgent):
         results = results[:3]
 
 
-        for chunk in results:
-            context.provenance.append(
-                ProvenanceEntry(
-                    sentence=chunk["text"],
-                    source_agent=AgentType.RETRIEVAL,
-                    source_chunk_ids=[
-                        chunk["chunk_id"]
-                    ],
-                    evidence=chunk["text"]
-                )
-            )
-
-        
-
         web_context = ""
 
         should_search = (
@@ -114,6 +100,19 @@ class RetrievalAgent(BaseAgent):
                     for chunk in results
                 ]
             )
+
+            for chunk in results:
+
+                context.provenance.append(
+                    ProvenanceEntry(
+                        sentence=chunk["text"],
+                        source_agent=AgentType.RETRIEVAL,
+                        source_chunk_ids=[
+                            chunk["chunk_id"]
+                        ],
+                        evidence=chunk["text"]
+                    )
+                )
         
         if prioritize_external and web_context:
 

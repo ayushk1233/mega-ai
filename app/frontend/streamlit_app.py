@@ -1,7 +1,8 @@
 import json
+import time
+import requests
 import sseclient
 import streamlit as st
-import requests
 
 
 st.set_page_config(
@@ -9,36 +10,44 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🚀 Mega AI Platform")
+st.title("🪂 Mega AI Platform")
 
 st.caption(
-    "Real-Time Multi-Agent AI Orchestration"
+    "Multi-Agent AI Orchestration System"
 )
 
-query = st.text_area(
-    "Enter Query"
+left_col, right_col = st.columns(
+    [2, 1]
 )
 
-run_button = st.button(
-    "Run Orchestration"
-)
+with left_col:
+
+    query = st.text_area(
+        "Enter Query"
+    )
+
+    run_button = st.button(
+        "Run Orchestration"
+    )
 
 
 if run_button and query:
 
-    status_container = st.container()
+    with left_col:
 
-    synthesis_container = st.container()
+        timeline_placeholder = st.empty()
 
-    critique_container = st.container()
+        status_placeholder = st.empty()
 
-    provenance_container = st.expander(
-        "Provenance"
-    )
+        synthesis_placeholder = st.empty()
 
-    telemetry_container = st.expander(
-        "Telemetry"
-    )
+        critique_placeholder = st.empty()
+
+    with right_col:
+
+        telemetry_placeholder = st.empty()
+
+        provenance_placeholder = st.empty()
 
     stream_response = requests.get(
         f"http://127.0.0.1:8000/stream?query={query}",
@@ -49,6 +58,8 @@ if run_button and query:
         stream_response
     )
 
+    timeline_entries = []
+
     for event in response.events():
 
         payload = json.loads(
@@ -57,50 +68,141 @@ if run_button and query:
 
         if payload["type"] == "status":
 
-            status_container.info(
+            timeline_entries.append(
                 payload["message"]
+            )
+
+            timeline_md = "### ⚡ Orchestration Timeline\n\n"
+            for entry in timeline_entries:
+                timeline_md += f"- {entry}\n"
+
+            timeline_placeholder.markdown(
+                timeline_md
             )
 
         elif payload["type"] == "final":
 
             data = payload["data"]
 
-            synthesis = data[
+            status_placeholder.success(
+                "✅ Orchestration Completed"
+            )
+
+            synthesis_data = data[
                 "agent_outputs"
             ]["synthesis"]["output"]
 
-            critique = data[
+            critique_data = data[
                 "agent_outputs"
             ]["critique"]["output"]
 
-            st.success(
-                "Orchestration Completed"
+            synthesis_placeholder.subheader(
+                "✨ Final Answer"
             )
 
-            synthesis_container.subheader(
-                "Synthesis"
+            if isinstance(
+                synthesis_data,
+                dict
+            ):
+
+                final_answer = synthesis_data.get(
+                    "final_answer",
+                    ""
+                )
+
+                streamed_text = ""
+
+                for word in final_answer.split():
+
+                    streamed_text += (
+                        word + " "
+                    )
+
+                    synthesis_placeholder.markdown(
+                        streamed_text
+                    )
+
+                    time.sleep(0.03)
+
+                insights = synthesis_data.get(
+                    "key_insights",
+                    []
+                )
+
+                if insights:
+
+                    with left_col:
+
+                        st.markdown(
+                            "### Key Insights"
+                        )
+
+                        for item in insights:
+
+                            st.markdown(
+                                f"- {item}"
+                            )
+
+            else:
+
+                synthesis_placeholder.write(
+                    synthesis_data
+                )
+
+            critique_placeholder.subheader(
+                "🛡 Critique"
             )
 
-            synthesis_container.write(
-                synthesis
-            )
+            if isinstance(
+                critique_data,
+                dict
+            ):
 
-            critique_container.subheader(
-                "Critique"
-            )
+                with left_col:
 
-            critique_container.write(
-                critique
-            )
+                    st.markdown(
+                        f"**Grounding Assessment:** {critique_data.get('grounding_assessment', '')}"
+                    )
 
-            provenance_container.json(
-                data["provenance"]
-            )
+                    st.markdown(
+                        f"**Hallucination Risks:** {critique_data.get('hallucination_risks', '')}"
+                    )
 
-            telemetry = requests.get(
-                "http://127.0.0.1:8000/metrics"
+                    st.markdown(
+                        f"**Confidence Analysis:** {critique_data.get('confidence_analysis', '')}"
+                    )
+
+            else:
+
+                critique_placeholder.write(
+                    critique_data
+                )
+
+            # Provenance as readable evidence cards
+            with right_col:
+
+                st.subheader("📚 Provenance")
+
+                for item in data["provenance"]:
+
+                    st.markdown(
+                        f"""### Evidence Chunk
+**Source Agent:** {item['source_agent']}
+
+**Evidence:**
+{item['evidence']}
+"""
+                    )
+
+            # Telemetry
+            metrics = requests.get(
+                f"http://127.0.0.1:8000/metrics?job_id={data['job_id']}"
             ).json()
 
-            telemetry_container.json(
-                telemetry
+            telemetry_placeholder.subheader(
+                "📊 Telemetry"
+            )
+
+            telemetry_placeholder.dataframe(
+                metrics
             )

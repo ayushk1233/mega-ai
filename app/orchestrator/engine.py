@@ -21,6 +21,10 @@ from app.memory.memory_manager import (
     MemoryManager
 )
 
+from app.orchestrator.event_stream import (
+    push_event
+)
+
 
 class Orchestrator:
 
@@ -52,6 +56,13 @@ class Orchestrator:
 
         for step in PIPELINE_STEPS:
 
+            push_event(
+                {
+                    "type": "status",
+                    "message": f"Running {step} agent..."
+                }
+            )
+
             time.sleep(1)
 
             agent = AGENT_REGISTRY[step]
@@ -59,6 +70,13 @@ class Orchestrator:
             start_time = time.time()
 
             context = agent.run(context)
+
+            push_event(
+                {
+                    "type": "status",
+                    "message": f"{step} completed"
+                }
+            )
 
             latency = time.time() - start_time
 

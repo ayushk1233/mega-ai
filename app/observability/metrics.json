@@ -58,5 +58,45 @@
     "agent": "critique",
     "latency_seconds": 3.18,
     "token_estimate": 149
+  },
+  {
+    "agent": "decomposition",
+    "latency_seconds": 2.99,
+    "token_estimate": 69
+  },
+  {
+    "agent": "retrieval",
+    "latency_seconds": 0.11,
+    "token_estimate": 49
+  },
+  {
+    "agent": "synthesis",
+    "latency_seconds": 3.84,
+    "token_estimate": 131
+  },
+  {
+    "agent": "critique",
+    "latency_seconds": 2.48,
+    "token_estimate": 92
+  },
+  {
+    "agent": "decomposition",
+    "latency_seconds": 2.9,
+    "token_estimate": 67
+  },
+  {
+    "agent": "retrieval",
+    "latency_seconds": 0.89,
+    "token_estimate": 36
+  },
+  {
+    "agent": "synthesis",
+    "latency_seconds": 4.21,
+    "token_estimate": 112
+  },
+  {
+    "agent": "critique",
+    "latency_seconds": 2.52,
+    "token_estimate": 83
   }
 ]

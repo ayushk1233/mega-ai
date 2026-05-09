@@ -2,6 +2,7 @@ import uuid
 from app.observability.events import EventType
 from app.observability.logger import log_event
 from app.observability.schemas import LogEvent
+from app.workers.tasks import process_query
 
 from fastapi import APIRouter
 
@@ -30,9 +31,9 @@ async def submit_query(payload: QueryRequest):
             job_id=job_id
         )
     )
+    process_query.delay(job_id, payload.query)
     return QueryResponse(
         job_id=str(uuid.uuid4()),
         status="accepted",
         query=payload.query
     )
-    

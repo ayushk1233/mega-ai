@@ -32,7 +32,7 @@ def generate_response(prompt: str):
             }
         ],
         temperature=0.2,
-        max_tokens=400,
+        max_tokens=1024,
         extra_headers={
             "HTTP-Referer": "http://localhost:8000",
             "X-OpenRouter-Title": "Mega AI"

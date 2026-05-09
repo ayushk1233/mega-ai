@@ -58,7 +58,13 @@ class RetrievalAgent(BaseAgent):
             )
         )
 
-        if should_search:
+        prioritize_external = (
+            tool_router.prioritize_external_sources(
+                context.user_query
+            )
+        )
+
+        if prioritize_external:
 
             web_results = tool_executor.execute(
                 "web_search",
@@ -72,19 +78,31 @@ class RetrievalAgent(BaseAgent):
                 ]
             )
 
-        retrieval_result = "\n".join(
+        internal_context = "\n".join(
             [
                 chunk["text"]
-                 for chunk in results
+                for chunk in results
             ]
         )
 
-        if web_context:
+        if prioritize_external and web_context:
 
-            retrieval_result += (
-                "\n\nExternal Intelligence:\n"
+            retrieval_result = (
+                "External Intelligence:\n"
                 + web_context
+                + "\n\nInternal Knowledge:\n" + internal_context
             )
+
+        else:
+
+            retrieval_result = internal_context
+
+            if web_context:
+
+                retrieval_result += (
+                    "\n\nExternal Intelligence:\n"
+                    + web_context
+                )
 
         context.agent_outputs["retrieval"] = AgentOutput(
             agent=AgentType.RETRIEVAL,

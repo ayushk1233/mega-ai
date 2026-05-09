@@ -25,3 +25,31 @@ class ToolRouter:
                 return True
 
         return False
+
+    def prioritize_external_sources(
+        self,
+        query: str
+    ) -> bool:
+
+        query = query.lower()
+
+        freshness_keywords = [
+            "latest",
+            "recent",
+            "today",
+            "current",
+            "new",
+            "innovation",
+            "update",
+            "trend",
+            "2025",
+            "2026"
+        ]
+
+        for keyword in freshness_keywords:
+
+            if keyword in query:
+
+                return True
+
+        return False

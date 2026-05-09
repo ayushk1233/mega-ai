@@ -1,6 +1,12 @@
-from duckduckgo_search import DDGS
+from tavily import TavilyClient
 
 from app.tools.base import BaseTool
+from app.config.settings import settings
+
+
+client = TavilyClient(
+    api_key=settings.TAVILY_API_KEY
+)
 
 
 class WebSearchTool(BaseTool):
@@ -9,23 +15,37 @@ class WebSearchTool(BaseTool):
 
     def run(self, query: str):
 
-        results = []
+        try:
 
-        with DDGS() as ddgs:
-
-            search_results = ddgs.text(
-                query,
-                max_results=3
+            response = client.search(
+                query=query,
+                search_depth="advanced",
+                max_results=5
             )
 
-            for result in search_results:
+            results = []
+
+            for item in response["results"]:
 
                 results.append(
                     {
-                        "title": result["title"],
-                        "body": result["body"],
-                        "link": result["href"]
+                        "title": item.get(
+                            "title",
+                            ""
+                        ),
+                        "body": item.get(
+                            "content",
+                            ""
+                        ),
+                        "link": item.get(
+                            "url",
+                            ""
+                        )
                     }
                 )
 
-        return results
+            return results
+
+        except Exception:
+
+            return []
